@@ -457,7 +457,7 @@ def network_thread():
             msg = json.loads(line.decode())
             incoming_messages.append(msg)
 
-def connect_to_server(ip=IP, port=PORT): #(ip="2.tcp.ngrok.io", port=25730):#
+def connect_to_server(ip=IP, port=PORT): 
     global server_socket
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_socket.connect((ip, port))
