@@ -41,7 +41,7 @@ def start_ngrok():
     return listener
  
 
-
+import time
 import socket
 import threading
 import json
@@ -101,15 +101,28 @@ def handle_client(conn, addr):
                 elif msg["type"] == "SN":
                     tiles[msg["I"]].SetNumber(msg["N"])
                     broadcast(msg)
+                elif msg["type"] == 1: 
+                    print("recieved alive ", addr)
 
     finally:
         print("Client disconnected:", addr)
         clients.remove(conn)
         conn.close()
-
+def KeepAlive():
+    """Thread B: produces items and puts them in the queue."""
+    print("Start keep alive thread")
+    global clients
+    while True:
+        if 0 != len(clients):
+            broadcast({
+                "type": 1,
+            })
+            print("Keep alive...")
+        time.sleep(15)         # simulate data arriving over time
 def main():
     #start_ngrok()
-
+    t1 = threading.Thread(target=KeepAlive, daemon=True)
+    t1.start()
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.bind(("0.0.0.0", 5000))
     server.listen()
