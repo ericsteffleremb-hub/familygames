@@ -4,7 +4,8 @@ setlocal
 echo Checking for Python 3.12...
 
 REM Check if python exists and is version 3.12
-python --version 2>nul | findstr /C:"3.12" >nul
+
+py -0p | findstr "3.12" > nul
 if %errorlevel% neq 0 (
     echo Python 3.12 not found. Installing via winget...
     winget install Python.Python.3.12 -h
