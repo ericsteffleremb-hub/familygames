@@ -29,8 +29,7 @@ if not exist ".\venv\" (
 )
 
 echo Activating virtual environment...
-call venv\Scripts\activate
-
+call .venv\Scripts\activate
 echo Checking for pygame...
 python -c "import pygame" 2>nul
 if %errorlevel% neq 0 (
