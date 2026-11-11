@@ -13,7 +13,8 @@ if %errorlevel% neq 0 (
 )
 
 REM Ensure python3.12 is on PATH
-where python >nul 2>&1
+
+py -0p | findstr "3.12" > nul
 if %errorlevel% neq 0 (
     echo Python not found on PATH even after install.
     echo You may need to restart your terminal.
@@ -24,7 +25,7 @@ if %errorlevel% neq 0 (
 echo Python 3.12 is installed.
 
 REM Check for venv folder
-if not exist ".\venv\" (
+if not exist ".venv" (
     echo Creating Python 3.12 virtual environment...
     py -3.12 -m venv .venv
 )
@@ -32,13 +33,16 @@ if not exist ".\venv\" (
 echo Activating virtual environment...
 call .venv\Scripts\activate
 echo Checking for pygame...
-python -c "import pygame" 2>nul
+
+python -m pip install --upgrade pip
+
+pip show pygame | findstr "Version: 2.6.1" > nul
 if %errorlevel% neq 0 (
     echo pygame not found. Installing pygame...
-    pip install pygame
+    pip install pygame==2.6.1
 )
 
-echo Running hex_rings_game.py...
+echo Running...
 python FamilyGame.py
 
 endlocal
